@@ -1,0 +1,77 @@
+---
+title: "EDA"
+author: "Aakanksha Baid"
+date: "1/13/2020"
+output: word_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, comment = NA, message = FALSE,
+                      fig.width = 4.5, fig.height = 4, fig.align = "center")
+```
+
+
+## 5c i. Read `Dating-Men.csv
+
+```{r}
+Men_DF = read.csv("Data/Dating-Men.csv")
+```
+
+## 5c ii. Saving data in R data format
+
+```{r, eval = FALSE} 
+save(Men_DF, file = "Dating-Men.RData")
+```
+
+## 5c iii. Examine the first and last few lines
+
+```{r}
+head(Men_DF)
+tail(Men_DF)
+```
+
+## 5c iv. Summary Statistics
+
+```{r}
+library(psych)
+summary(Men_DF)
+describe(Men_DF)
+```
+
+From the summary statistics, we can see that males of the dating site received between 0 and 88 first-contact e-mails during the observation period. On average, the male users received 7.69 e-mails, while the median number of e-mails received is low at 4, which indicates that the distribution of e-mails received is skewed. The first quartile is 1, meaning 25 percent of the site users received at most 1 e-mail. The third quartile is 10, or 75 percent of users received up to 10 e-mails. 
+
+The looks `rating` variable has both negative and positive values and is roughly centered at zero, with a mean of -0.09. This is due to the fact that original looks ratings, collected on a 1 to 10 scale, were normalized to have mean zero and variance one. The sample represents only a small part of the whole data base and is concentrated among users in a specific age range. This explains why the mean of the `rating` variable in our sample is not zero.
+
+The `height` variable ranges from 61 inches to 85 inches. The mean hieght is 70.93 inches and median height is lower at 71.5 inches.
+
+
+## 5c v. Histogram
+
+```{r}
+par(cex = 0.65) 
+hist(Men_DF$emails,
+     col  = "tan1",
+     main = "Histogram of first-contact e-mails received by Men",
+     xlab = "E-Mails") 
+```
+
+The above histogram shows that the distribution of first-contact emails is right-skewed or positively skewed, meaning that there are a number of observations greater than the mode.
+
+Comparing the histogram to the histogram ran on the emails received by women, we can see that both the distribution of emails for males and females are positively skewed.Though the range is higher for women, going up to 186 emails, while for men the maximum number of emails received is 88. However, the frequency of emails for males is higher in the first bin, going to nearly 1150. For females, the frequency only goes upto 650. This could be due to larger data size of males (1507) compared to females (1366).
+
+
+
+## 5c vi. New package
+
+```{r}
+install.packages("ggplot2",repos = "http://cran.us.r-project.org")
+library(ggplot2)
+
+ggplot(data=Men_DF,mapping=aes(x=days_active,y=emails))+
+  geom_point()+
+  geom_smooth() +
+  labs(title="Emails received vs. Days active on site",
+       x="Days Active on Site",y="Emails")
+```
+
+The above scatterplot plotted using ggplot package shows a positve correlation between emails received and days the male users are active on site. 
